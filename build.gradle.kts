@@ -27,6 +27,6 @@ tasks {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.springframework.boot:spring-boot-starter-batch:2.5.5")
-    implementation("org.springframework.batch.extensions:spring-batch-kotlin-dsl:0.1.0-SNAPSHOT")
+    implementation("org.springframework.batch.extensions:spring-batch-kotlin-dsl:0.1.0")
     runtimeOnly("com.h2database:h2:1.4.200")
 }
