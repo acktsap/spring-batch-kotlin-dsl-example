@@ -33,6 +33,7 @@ class BatchApplication {
                 RepeatStatus.FINISHED
             }
             .build()
+
         return jobBuilderFactory.get("beforeJob")
             .start(
                 stepBuilderFactory
@@ -63,6 +64,7 @@ class BatchApplication {
                 }
             }
         }
+
         job("afterJob") {
             flows {
                 step("testStep") {
