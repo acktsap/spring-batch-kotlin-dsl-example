@@ -19,7 +19,10 @@ import org.springframework.context.annotation.Bean
 class BatchApplication {
     // before
     @Bean
-    fun beforeJob(jobBuilderFactory: JobBuilderFactory, stepBuilderFactory: StepBuilderFactory): Job {
+    fun beforeJob(
+        jobBuilderFactory: JobBuilderFactory,
+        stepBuilderFactory: StepBuilderFactory,
+    ): Job {
         val testFlow = FlowBuilder<Flow>("testFlow")
             .start(
                 stepBuilderFactory.get("testStep")
@@ -59,17 +62,20 @@ class BatchApplication {
                 }
             }
         }
+        val transitionStep = batch {
+            step("transitionStep") {
+                tasklet { _, _ ->
+                    println("run transitionTasklet")
+                    RepeatStatus.FINISHED
+                }
+            }
+        }
 
         job("afterJob") {
             flows {
                 flow(testFlow) {
                     on("COMPLETED") {
-                        step("transitionStep") {
-                            tasklet { _, _ ->
-                                println("run transitionTasklet")
-                                RepeatStatus.FINISHED
-                            }
-                        }
+                        step(transitionStep)
                     }
                     on("TEST") {
                         fail()

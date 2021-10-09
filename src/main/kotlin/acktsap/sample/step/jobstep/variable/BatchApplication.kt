@@ -17,7 +17,10 @@ import org.springframework.context.annotation.Bean
 class BatchApplication {
     // before
     @Bean
-    fun beforeJob(jobBuilderFactory: JobBuilderFactory, stepBuilderFactory: StepBuilderFactory): Job {
+    fun beforeJob(
+        jobBuilderFactory: JobBuilderFactory,
+        stepBuilderFactory: StepBuilderFactory,
+    ): Job {
         val anotherJob = jobBuilderFactory.get("anotherJob")
             .start(
                 stepBuilderFactory.get("anotherStep")

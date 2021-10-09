@@ -18,7 +18,10 @@ import org.springframework.context.annotation.Bean
 class BatchApplication {
     // before
     @Bean
-    fun beforeJob(jobBuilderFactory: JobBuilderFactory, stepBuilderFactory: StepBuilderFactory): Job {
+    fun beforeJob(
+        jobBuilderFactory: JobBuilderFactory,
+        stepBuilderFactory: StepBuilderFactory,
+    ): Job {
         return jobBuilderFactory.get("beforeJob")
             .start(
                 stepBuilderFactory.get("testStep")
@@ -40,7 +43,12 @@ class BatchApplication {
                     .writer {
                         println("write $it")
                     }
-                    .exceptionHandler { _, _ -> /* ... */ }
+                    .faultTolerant()
+                    .retry(RuntimeException::class.java)
+                    .retryLimit(2)
+                    .exceptionHandler { _, _ ->
+                        // do something
+                    }
                     .build()
             )
             .build()
@@ -70,7 +78,13 @@ class BatchApplication {
                         writer {
                             println("write $it")
                         }
-                        exceptionHandler { _, _ -> /* ... */ }
+                        exceptionHandler { _, _ ->
+                            // do something
+                        }
+                        faultTolerant {
+                            retry(RuntimeException::class)
+                            retryLimit(2)
+                        }
                     }
                 }
             }

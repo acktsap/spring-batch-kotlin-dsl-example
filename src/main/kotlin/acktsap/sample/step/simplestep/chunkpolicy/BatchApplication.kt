@@ -19,7 +19,10 @@ import org.springframework.context.annotation.Bean
 class BatchApplication {
     // before
     @Bean
-    fun beforeJob(jobBuilderFactory: JobBuilderFactory, stepBuilderFactory: StepBuilderFactory): Job {
+    fun beforeJob(
+        jobBuilderFactory: JobBuilderFactory,
+        stepBuilderFactory: StepBuilderFactory,
+    ): Job {
         return jobBuilderFactory.get("beforeJob")
             .start(
                 stepBuilderFactory.get("testStep")
@@ -27,6 +30,7 @@ class BatchApplication {
                     .reader(
                         object : ItemReader<Int> {
                             private var count = 0
+
                             override fun read(): Int? {
                                 return if (count < 5) {
                                     count++
@@ -56,6 +60,7 @@ class BatchApplication {
                         reader(
                             object : ItemReader<Int> {
                                 private var count = 0
+
                                 override fun read(): Int? {
                                     return if (count < 5) {
                                         count++

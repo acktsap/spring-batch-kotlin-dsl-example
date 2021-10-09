@@ -29,7 +29,7 @@ class BatchApplication {
     fun beforeJob(
         jobBuilderFactory: JobBuilderFactory,
         stepBuilderFactory: StepBuilderFactory,
-        @Qualifier("testTasklet") testTasklet: Tasklet
+        @Qualifier("testTasklet") testTasklet: Tasklet,
     ): Job {
         return jobBuilderFactory.get("beforeJob")
             .start(
