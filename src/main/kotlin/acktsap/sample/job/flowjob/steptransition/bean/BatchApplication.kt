@@ -47,9 +47,9 @@ class BatchApplication {
     ): Job {
         return jobBuilderFactory.get("beforeJob")
             .start(testStep)
-            .on("COMPLETED").to(transitionStep)
-            .from(testStep).on("TEST").fail()
-            .on("*").stop()
+            .on("COMPLETED").end()
+            .from(testStep).on("TEST").to(transitionStep)
+            .from(testStep).on("*").stop()
             .end()
             .build()
     }
@@ -61,10 +61,10 @@ class BatchApplication {
             flows {
                 stepBean("testStep") {
                     on("COMPLETED") {
-                        stepBean("transitionStep")
+                        end()
                     }
                     on("TEST") {
-                        fail()
+                        stepBean("transitionStep")
                     }
                     on("*") {
                         stop()

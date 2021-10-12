@@ -54,7 +54,7 @@ class BatchApplication {
             .next(testDecider)
             .on("COMPLETED").end()
             .from(testDecider).on("FAILED").to(transitionStep)
-            .on("*").stop()
+            .from(testDecider).on("*").stop()
             .end()
             .build()
     }
